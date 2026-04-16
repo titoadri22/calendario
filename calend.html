@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Squash 2026</title>
+
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        /* --- TITULAR --- */
+        .main-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #e67e22;
+            display: inline-block;
+            padding-bottom: 5px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .main-title h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        /* --- FILTROS --- */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-input,
+        .filter-select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .filter-input {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 140px;
+            cursor: pointer;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        /* --- ETIQUETAS DE ESTADO --- */
+        .status-label {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .st-finalizado {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .st-proximo {
+            background: #2ecc71;
+            color: white;
+        }
+
+        /* --- TABLA (SOLO ESCRITORIO) --- */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: white;
+            min-width: 700px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        thead tr {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        /* --- BOTONES Y BADGES --- */
+        .btn-torneo {
+            display: inline-block;
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.3s;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        @media screen and (min-width: 769px) {
+            .btn-torneo {
+                width: auto;
+                padding: 8px 16px;
+                border-radius: 50px;
+            }
+        }
+
+        .btn-torneo:hover {
+            background-color: #219150;
+        }
+
+        tr.torneo-pasado {
+            background-color: #f8f9fa;
+        }
+
+        tr.torneo-pasado .fecha {
+            color: #7f8c8d;
+        }
+
+        tr.torneo-pasado .btn-torneo {
+            background-color: #95a5a6;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: white;
+            display: inline-block;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nac {
+            background-color: #e74c3c;
+        }
+
+        .auto {
+            background-color: #3498db;
+        }
+
+        .int {
+            background-color: #f1c40f;
+            color: #333;
+        }
+
+        .fecha {
+            font-weight: bold;
+            color: #e67e22;
+            white-space: nowrap;
+        }
+
+        #no-results {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            display: none;
+            font-size: 18px;
+        }
+
+        /* =========================================
+     --- ARREGLO RESPONSIVE / MÓVIL ---
+     ========================================= */
+        @media screen and (max-width: 768px) {
+            .main-title h1 {
+                font-size: 22px;
+            }
+
+            .filter-container {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .filter-input,
+            .filter-select {
+                width: 100%;
+            }
+
+            table {
+                min-width: 100%;
+                box-shadow: none;
+                background: transparent;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody,
+            tr,
+            td {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            tr {
+                background: #ffffff;
+                margin-bottom: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                border: 1px solid #eee;
+                position: relative;
+                padding: 55px 20px 20px 20px;
+            }
+
+            td {
+                padding: 0;
+                border: none;
+                text-align: left;
+            }
+
+            td.fecha {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                font-size: 13px;
+                color: #e67e22;
+                z-index: 10;
+            }
+
+            td:nth-child(2) {
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                left: auto;
+                width: auto;
+                z-index: 10;
+            }
+
+            td.nombre-torneo {
+                font-size: 18px;
+                font-weight: 800;
+                color: #2c3e50;
+                margin-bottom: 10px;
+                line-height: 1.3;
+                display: block;
+                margin-top: 5px;
+            }
+
+            td:nth-child(4) {
+                color: #7f8c8d;
+                font-size: 14px;
+                margin-bottom: 20px;
+                display: block;
+            }
+
+            td:nth-child(4)::before {
+                content: "📍 ";
+            }
+
+            td:last-child {
+                margin-top: 15px;
+                width: 100%;
+            }
+
+            .status-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-title">
+        <h1>Calendario 2026</h1>
+    </div>
+
+    <div class="filter-container">
+        <input type="text" id="searchInput" class="filter-input" placeholder="Buscar torneo o sede...">
+
+        <select id="typeSelect" class="filter-select">
+            <option value="all">Todo Tipo</option>
+            <option value="Nacional">Nacional</option>
+            <option value="Autonómico">Autonómico</option>
+            <option value="Internacional">Internacional</option>
+        </select>
+
+        <select id="monthSelect" class="filter-select">
+            <option value="all">Todo el año</option>
+            <option value="01">Enero</option>
+            <option value="02">Febrero</option>
+            <option value="03">Marzo</option>
+            <option value="04">Abril</option>
+            <option value="05">Mayo</option>
+            <option value="06">Junio</option>
+            <option value="07">Julio</option>
+            <option value="08">Agosto</option>
+            <option value="09">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+
+        <select id="statusSelect" class="filter-select">
+            <option value="all">Cualquier estado</option>
+            <option value="upcoming">Próximos</option>
+            <option value="completed">Finalizados</option>
+        </select>
+    </div>
+
+    <table id="tournamentTable">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Torneo</th>
+                <th>Sede</th>
+                <th>Enlace</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr data-fecha="2026-01-25">
+                <td class="fecha">23-25 Ene</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España Sub 19</td>
+                <td>RCN Tenerife</td>
+                <td><a href="https://www.rankedin.com/en/tournament/62611/campeonato-de-espana-sub-19-2026"
+                        class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-02-08">
+                <td class="fecha">06-08 Feb</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España Absoluto</td>
+                <td>CT Sabadell</td>
+                <td><a href="https://www.rankedin.com/en/tournament/63531/campeonato-de-espana-cobendai-2026-memorial-chimo-marmaneu"
+                        class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-02-14">
+                <td class="fecha">13-14 Feb</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">Master CV (Fed. Valenciana)</td>
+                <td>Tenisquash</td>
+                <td><a href="https://www.rankedin.com/en/tournament/64611/master-squash-comunidad-valenciana-2025"
+                        class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-02-22">
+                <td class="fecha">20-22 Feb</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Nacional Veteranos "Ximo Marmaneu" 2026</td>
+                <td>CS Alboraya</td>
+                <td><a href="https://www.rankedin.com/en/tournament/62744/open-de-veteranos-ximo-marmaneu-2026"
+                        class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-03-01">
+                <td class="fecha">27 Feb - 01 Mar</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Ponferrada</td>
+                <td>CS Ponferrada</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-02-28">
+                <td class="fecha">27-28 Feb</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">1ª Prueba Autonómica</td>
+                <td>Olympia Alcoy</td>
+                <td><a href="https://www.rankedin.com/en/tournament/64434/1a-prueba-autonomica-squash-comunidad-valenciana-olympia-alcoy"
+                        class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-03-15">
+                <td class="fecha">13-15 Mar</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España Sub 11 y Sub 15</td>
+                <td>RCN Tenerife</td>
+                <td><a href="https://www.rankedin.com/en/tournament/64181/campeonato-de-espana-de-squash-sub-11-y-sub-15-2026"
+                        class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-03-21">
+                <td class="fecha">20-21 Mar</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">II Open Nacional Squash Veteranos 2026</td>
+                <td>C.D.F. Rias do Sur (Pontevedra)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-03-21">
+                <td class="fecha">20-21 Mar</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">2ª Prueba Autonómica</td>
+                <td>K7 (Paterna)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-03-29">
+                <td class="fecha">28-29 Mar</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Castilla y León Palencia</td>
+                <td>Campo de la Juventud (Palencia)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-03-31">
+                <td class="fecha">28-31 Mar</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Europa Individual Sub 19</td>
+                <td>Cracovia (Polonia)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-04-05">
+                <td class="fecha">02-05 Abr</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Europa Equipos Sub 19</td>
+                <td>Cracovia (Polonia)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-04-12">
+                <td class="fecha">10-12 Abr</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España Sub 13 y Sub 17</td>
+                <td>CS Ponferrada</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-04-19">
+                <td class="fecha">17-19 Abr</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Santa Maria</td>
+                <td>CS León</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-04-18">
+                <td class="fecha">17-18 Abr</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">Absoluto de 2ª Categoría</td>
+                <td>Tenisquash Alzira</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-04-26">
+                <td class="fecha">24-26 Abr</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España de Veteranos</td>
+                <td>RCN Tenerife</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-05-02">
+                <td class="fecha">29 Abr - 02 May</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Europa Equipos D1 y D2</td>
+                <td>Amsterdam (Holanda)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-05-09">
+                <td class="fecha">08-09 May</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">3ª Prueba Autonómica</td>
+                <td>Tenisquash</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-05-10">
+                <td class="fecha">07-10 May</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Europa Equipos Sub 15 y Sub 17</td>
+                <td>A Determinar</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-05-17">
+                <td class="fecha">15-17 May</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España de Clubes</td>
+                <td>CS Benedikta</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-05-31">
+                <td class="fecha">29-31 May</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Iberdrola Tizona</td>
+                <td>CS Burgos</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-05-30">
+                <td class="fecha">29-30 May</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">4ª Prueba Autonómica</td>
+                <td>K7 (Paterna)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-06-07">
+                <td class="fecha">05-07 Jun</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Iberdrola Santiago/Ponferrada</td>
+                <td>Santiago de Compostela</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-06-14">
+                <td class="fecha">12-14 Jun</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Spanish Master</td>
+                <td>Squash Santiago</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-06-21">
+                <td class="fecha">19-21 Jun</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Camp. España Sel. Auto. Sub 17</td>
+                <td>Squash Santiago</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-06-21">
+                <td class="fecha">19-21 Jun</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open San Juan</td>
+                <td>CS León</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-06-20">
+                <td class="fecha">19-20 Jun</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">Absoluto de equipos CV</td>
+                <td>Tenisquash Alzira</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-06-27">
+                <td class="fecha">26-27 Jun</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Aranda de Duero</td>
+                <td>CS Burgos</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-07-18">
+                <td class="fecha">17-18 Jul</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">Absoluto Veteranos CV</td>
+                <td>Tenisquash Alzira</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-07-31">
+                <td class="fecha">20-31 Jul</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato del Mundo Junior</td>
+                <td>Ontario (Canadá)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-02">
+                <td class="fecha">31 Jul - 02 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">PSA Memorial Chimo Marmaneu, Challenger Event MASC</td>
+                <td>Olympia Alboraya</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-02">
+                <td class="fecha">31 Jul - 02 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">PSA Memorial Chimo Marmaneu, Challenger Event FEM</td>
+                <td>Olympia Alboraya</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-09">
+                <td class="fecha">03-09 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Mundo Universitario</td>
+                <td>Bombay (India)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-15">
+                <td class="fecha">11-15 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">PSA Valencia 2026, COPPER World Event</td>
+                <td>Olympia Alboraya</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-15">
+                <td class="fecha">14-15 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">PSA Satellite, Challenger Event MASC</td>
+                <td>Olympia Alboraya</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-15">
+                <td class="fecha">14-15 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">PSA Satellite, Challenger Event FEM</td>
+                <td>Olympia Alboraya</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-08-30">
+                <td class="fecha">28-30 Ago</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Spanish Junior</td>
+                <td>RCN Tenerife</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-09-20">
+                <td class="fecha">19-20 Sep</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">PSA Ciudad de Alcoy</td>
+                <td>Olympia Alcoy</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-09-27">
+                <td class="fecha">23-27 Sep</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Europa de Clubes</td>
+                <td>CS Benedikta</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-09-27">
+                <td class="fecha">25-27 Sep</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Burgos</td>
+                <td>CS Burgos</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-10-04">
+                <td class="fecha">02-04 Oct</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Camp. España Sel. Autonómicas</td>
+                <td>CS Benedikta</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-10-04">
+                <td class="fecha">02-04 Oct</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open San Froilán</td>
+                <td>CS León</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-10-11">
+                <td class="fecha">09-11 Oct</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Copa SM El Rey - Copa SM La Reina</td>
+                <td>CS Palencia</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-10-18">
+                <td class="fecha">16-18 Oct</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Copa de España Sub 13 y Sub 17</td>
+                <td>CS Valencia</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-10-25">
+                <td class="fecha">23-25 Oct</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España 2ª Categoría</td>
+                <td>CS Cuenca</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-10-31">
+                <td class="fecha">30-31 Oct</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">5ª Prueba Autonómica</td>
+                <td>Tenisquash</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-08">
+                <td class="fecha">06-08 Nov</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Campeonato de España de Squash 57</td>
+                <td>CS Cuenca</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-14">
+                <td class="fecha">13-14 Nov</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">6ª Prueba Autonómica</td>
+                <td>Olympia Alcoy</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-15">
+                <td class="fecha">13-15 Nov</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Nacional Astillero</td>
+                <td>Astillero</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-15">
+                <td class="fecha">13-15 Nov</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Iberdrola Astillero</td>
+                <td>Astillero</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-22">
+                <td class="fecha">20-22 Nov</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Copa España Sub 11, Sub 15 y Sub 19</td>
+                <td>Squash Santiago</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-29">
+                <td class="fecha">27-29 Nov</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Iberdrola Reyno de Navarra</td>
+                <td>AD San Juan</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-11-28">
+                <td class="fecha">27-28 Nov</td>
+                <td><span class="badge auto">Autonómico</span></td>
+                <td class="nombre-torneo">Campeonato Absoluto de la CV</td>
+                <td>Olympia Alboraya</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-12-13">
+                <td class="fecha">11-13 Dic</td>
+                <td><span class="badge nac">Nacional</span></td>
+                <td class="nombre-torneo">Open Costa del Sol</td>
+                <td>CS Fuengirola</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+            <tr data-fecha="2026-12-19">
+                <td class="fecha">14-19 Dic</td>
+                <td><span class="badge int">Internacional</span></td>
+                <td class="nombre-torneo">Campeonato de Mundo Equipos</td>
+                <td>Cheongju (Korea)</td>
+                <td><a href="#" class="btn-torneo" target="_blank">Ver Torneo</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div id="no-results">
+        <p>🔍 No se han encontrado torneos con esos filtros.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // FECHA ACTUAL
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const searchInput = document.getElementById('searchInput');
+            const typeSelect = document.getElementById('typeSelect');
+            const monthSelect = document.getElementById('monthSelect');
+            const statusSelect = document.getElementById('statusSelect');
+
+            const table = document.getElementById('tournamentTable');
+            const rows = table.getElementsByTagName('tr');
+            const tbody = table.querySelector('tbody');
+            const dataRows = tbody.getElementsByTagName('tr');
+            const noResults = document.getElementById('no-results');
+
+            function initStatus() {
+                for (let row of dataRows) {
+                    const dateStr = row.getAttribute('data-fecha');
+                    if (!dateStr) continue;
+
+                    const tourDate = new Date(dateStr);
+
+                    if (tourDate < today) {
+                        // Finalizado
+                        row.classList.add('torneo-pasado');
+                        row.setAttribute('data-status', 'completed');
+
+                        const btn = row.querySelector('.btn-torneo');
+                        if (btn) btn.innerText = "Ver Resultados";
+                    } else {
+                        // Próximo
+                        row.setAttribute('data-status', 'upcoming');
+                    }
+                }
+            }
+
+            function filterTable() {
+                const textFilter = searchInput.value.toLowerCase();
+                const typeFilter = typeSelect.value.toLowerCase();
+                const monthFilter = monthSelect.value;
+                const statusFilter = statusSelect.value;
+
+                let visibleCount = 0;
+
+                for (let row of dataRows) {
+                    const tourName = row.querySelector('.nombre-torneo').textContent.toLowerCase();
+                    const tourVenue = row.cells[3].textContent.toLowerCase();
+                    const tourTypeBadge = row.querySelector('.badge').textContent.toLowerCase();
+                    const tourDateStr = row.getAttribute('data-fecha');
+                    const tourStatus = row.getAttribute('data-status');
+
+                    // Filtros
+                    const matchesText = tourName.includes(textFilter) || tourVenue.includes(textFilter);
+                    const matchesType = typeFilter === 'all' || tourTypeBadge.includes(typeFilter);
+
+                    let matchesMonth = true;
+                    if (monthFilter !== 'all') {
+                        const tourMonth = tourDateStr.split('-')[1];
+                        matchesMonth = (tourMonth === monthFilter);
+                    }
+
+                    let matchesStatus = true;
+                    if (statusFilter !== 'all') {
+                        matchesStatus = (tourStatus === statusFilter);
+                    }
+
+                    if (matchesText && matchesType && matchesMonth && matchesStatus) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+
+                if (visibleCount === 0) {
+                    noResults.style.display = 'block';
+                    table.style.display = 'none';
+                } else {
+                    noResults.style.display = 'none';
+                    if (window.innerWidth <= 768) {
+                        table.style.display = 'block';
+                    } else {
+                        table.style.display = 'table';
+                    }
+                }
+            }
+
+            initStatus();
+
+            searchInput.addEventListener('keyup', filterTable);
+            typeSelect.addEventListener('change', filterTable);
+            monthSelect.addEventListener('change', filterTable);
+            statusSelect.addEventListener('change', filterTable);
+
+            window.addEventListener('resize', filterTable);
+        });
+    </script>
+
+</body>
+
+</html>
